@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackgroundBorderless"
     android:padding="16dp">
 
     <TextView

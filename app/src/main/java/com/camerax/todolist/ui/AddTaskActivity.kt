@@ -1,7 +1,12 @@
 package com.camerax.todolist.ui
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isEmpty
+import androidx.core.widget.doOnTextChanged
 import com.camerax.todolist.R
 import com.camerax.todolist.databinding.ActivityAddTaskBinding
 import com.camerax.todolist.datasource.TaskDataSource
@@ -33,6 +38,17 @@ class AddTaskActivity : AppCompatActivity() {
         }
 
         insertListeners()
+        tilListeners()
+    }
+
+    private fun tilListeners() {
+        binding.tietTitle.doOnTextChanged {text, start, before, count ->
+            Log.d("TAG", "tilListeners: $count")
+            if (text!!.isNotEmpty()) {
+                binding.tilTitle.error = null
+                binding.tilTitle.endIconDrawable = applicationContext.getDrawable(R.drawable.ic_check)
+            }
+        }
     }
 
     private fun insertListeners() {
@@ -65,17 +81,38 @@ class AddTaskActivity : AppCompatActivity() {
         }
 
         binding.btnNewTask.setOnClickListener {
-            val task = Task(
-                title = binding.tilTitle.text,
-                date = binding.tilDate.text,
-                hour = binding.tilHour.text,
-                id = intent.getIntExtra(TASK_ID, 0)
-            )
-            TaskDataSource.insertTask(task)
+            if (checkFormulario()) {
+                val task = Task(
+                    title = binding.tilTitle.text,
+                    date = binding.tilDate.text,
+                    hour = binding.tilHour.text,
+                    id = intent.getIntExtra(TASK_ID, 0)
+                )
+                TaskDataSource.insertTask(task)
 
-            setResult(RESULT_OK)
-            finish()
+                setResult(RESULT_OK)
+                finish()
+            }
         }
+    }
+
+    private fun checkFormulario(): Boolean {
+        if (binding.tilTitle.text.isEmpty()) {
+            binding.tilTitle.error = "Defina um título."
+            return false
+        }
+
+        if (binding.tilDate.text.isEmpty()) {
+            binding.tilDate.error = "Defina uma data."
+            return false
+        }
+
+        if (binding.tilHour.text.isEmpty()) {
+            binding.tilHour.error = "Defina um horário."
+            return false
+        }
+
+        return true
     }
 
     companion object {
