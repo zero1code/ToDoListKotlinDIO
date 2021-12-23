@@ -1,0 +1,23 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/black"
+    tools:targetApi="lollipop">
+
+    <item>
+        <selector>
+            <item android:state_enabled="true">
+                <shape android:shape="oval">
+                    <solid android:color="@color/white"/>
+                    <corners android:radius="8dp" />
+                </shape>
+            </item>
+
+            <item android:state_enabled="false">
+                <shape android:state_enabled="false">
+                    <solid android:color="@color/white"/>
+                    <corners android:radius="8dp" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

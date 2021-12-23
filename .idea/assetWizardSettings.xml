@@ -11,25 +11,11 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="clipartAsset">
-                              <value>
-                                <PersistentState>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="url" value="file:/E:/AndroidSDK/icons/material/materialicons/more_vert/baseline_more_vert_24.xml" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_more" />
-                            <entry key="sourceFile" value="D:\curso-kotlin\Todolist" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_empty_list" />
+                            <entry key="sourceFile" value="C:\Users\mpnot\Downloads\undraw_not_found_-60-pq.svg" />
                           </map>
                         </option>
                       </PersistentState>
