@@ -17,8 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AddTaskActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".ui.AddTaskActivity" />
 
     </application>
 
