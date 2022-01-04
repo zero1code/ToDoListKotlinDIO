@@ -6,18 +6,13 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.camerax.todolist.databinding.ActivityMainBinding
-import com.camerax.todolist.datasource.TaskDataSource
+import com.camerax.todolist.data.TaskDataSource
 import com.camerax.todolist.ui.AddTaskActivity.Companion.TASK_ID
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter by lazy { TaskListAdapter() }
-
-    private val register =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) updateList()
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +27,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun insertListeners() {
         binding.fab.setOnClickListener {
-            register.launch(Intent(this, AddTaskActivity::class.java))
+            startActivity(Intent(this, AddTaskActivity::class.java))
         }
 
         adapter.listenerEdit = {
             val intent = Intent(this, AddTaskActivity::class.java)
             intent.putExtra(TASK_ID, it.id)
-            register.launch(intent)
+            startActivity(intent)
         }
 
         adapter.listenerDelete = {

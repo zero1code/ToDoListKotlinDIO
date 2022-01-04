@@ -46,6 +46,23 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="32dp" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_task"
+                app:constraint_referenced_ids="til_title, til_date, til_hour, til_description, til_task_type, til_warned, til_timer, btn_new_task, btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/confirm_animation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:lottie_rawRes="@raw/confirm"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_title"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

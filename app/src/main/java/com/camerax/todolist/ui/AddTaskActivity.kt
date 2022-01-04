@@ -1,6 +1,8 @@
 package com.camerax.todolist.ui
 
+import android.animation.Animator
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.os.Bundle
@@ -13,26 +15,38 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.camerax.todolist.R
+import com.camerax.todolist.core.extensions.createDialog
+import com.camerax.todolist.core.extensions.createProgressDialog
 import com.camerax.todolist.databinding.ActivityAddTaskBinding
-import com.camerax.todolist.datasource.TaskDataSource
-import com.camerax.todolist.extensions.format
-import com.camerax.todolist.extensions.text
-import com.camerax.todolist.model.Task
+import com.camerax.todolist.data.TaskDataSource
+import com.camerax.todolist.data.model.TaskResponseValue
+import com.camerax.todolist.core.extensions.format
+import com.camerax.todolist.core.extensions.text
+import com.camerax.todolist.presentation.AddTaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.Result.Companion.success
 
 
 class AddTaskActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddTaskBinding
+    private val viewModel by viewModel<AddTaskViewModel>()
+    private val dialog by lazy { createProgressDialog() }
+    private val binding by lazy { ActivityAddTaskBinding.inflate(layoutInflater) }
+    private lateinit var task: TaskResponseValue
+    private var alarmHour = ""
+    private var alarmMinute = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if (intent.hasExtra(TASK_ID)) {
@@ -44,6 +58,8 @@ class AddTaskActivity : AppCompatActivity() {
                 binding.tilHour.text = it.hour
             }
         }
+
+        bindObserve()
 
         val taskTypeItems =
             listOf("Material", "Design", "Components", "Android", "+ Adicionar Tipo")
@@ -164,6 +180,9 @@ class AddTaskActivity : AppCompatActivity() {
                     binding.tilTimer.text = "${hour}h e $minute min"
                 }
 
+                alarmHour = if (picker.hour in 0..9) "0${picker.hour}" else picker.hour.toString()
+                alarmMinute = if (picker.minute in 0..9) "0${picker.minute}" else picker.minute.toString()
+
             }
 
             picker.show(supportFragmentManager, null)
@@ -175,16 +194,38 @@ class AddTaskActivity : AppCompatActivity() {
 
         binding.btnNewTask.setOnClickListener {
             if (checkFormulario()) {
-                val task = Task(
+
+                val sdfd = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                val sdfa = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+                val date = sdfd.parse("${binding.tilDate.text} ${binding.tilHour.text}")
+
+                val timeDate = sdfa.parse(binding.tilHour.text)!!.time
+                val timeAlarm = sdfa.parse("$alarmHour:$alarmMinute")!!.time
+
+                val alarmTime = timeDate.minus(timeAlarm)
+                val alarmHour = TimeUnit.MILLISECONDS.toHours(alarmTime) % 24
+                val alarmMinute = TimeUnit.MILLISECONDS.toMinutes(alarmTime) % 60
+
+
+                val timestampDate = (date.time.div(1000))
+                val timestampAlarm = sdfd.parse("${binding.tilDate.text} $alarmHour:$alarmMinute")!!.time.div(1000)
+
+                task = TaskResponseValue(
+                    id = 0,
                     title = binding.tilTitle.text,
                     date = binding.tilDate.text,
                     hour = binding.tilHour.text,
-                    id = intent.getIntExtra(TASK_ID, 0)
+                    description = binding.tilDescription.text,
+                    task_type = binding.tilTaskType.text,
+                    remember_task = binding.tilWarned.text,
+                    remember_time = binding.tilTimer.text,
+                    timestamp_date = timestampDate,
+                    timestamp_alarm = timestampAlarm
                 )
-                TaskDataSource.insertTask(task)
+                viewModel.saveTask(task)
 
                 setResult(RESULT_OK)
-                finish()
             }
         }
     }
@@ -202,6 +243,16 @@ class AddTaskActivity : AppCompatActivity() {
 
         if (binding.tilHour.text.isEmpty()) {
             binding.tilHour.error = "Defina um horário."
+            return false
+        }
+
+        if (binding.tilTaskType.text.isEmpty()) {
+            binding.tilTaskType.error = "Defina um tipo de tarefa."
+            return false
+        }
+
+        if (binding.tilWarned.text.isEmpty()) {
+            binding.tilWarned.error = "Campo obrigatório."
             return false
         }
 
@@ -227,6 +278,39 @@ class AddTaskActivity : AppCompatActivity() {
         val csl = ta.getColorStateList(0)
         ta.recycle()
         return csl
+    }
+
+    private fun bindObserve() {
+        viewModel.state.observe(this) {
+            when (it) {
+                AddTaskViewModel.State.Loading -> dialog.show()
+                is AddTaskViewModel.State.Error -> {
+                    dialog.dismiss()
+                    createDialog {
+                        setMessage(it.error.message)
+                    }.show()
+                }
+                is AddTaskViewModel.State.Success -> success(it)
+                AddTaskViewModel.State.Saved -> {
+                    dialog.dismiss()
+                    binding.appBar.visibility = View.GONE
+                    binding.groupTask.visibility = View.GONE
+                    binding.confirmAnimation.visibility = View.VISIBLE
+                    binding.confirmAnimation.playAnimation()
+                    binding.confirmAnimation.addAnimatorListener(object : Animator.AnimatorListener {
+                        override fun onAnimationRepeat(animation: Animator?) {}
+                        override fun onAnimationCancel(animation: Animator?) {}
+                        override fun onAnimationStart(animation: Animator?) {}
+
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            startActivity(Intent(this@AddTaskActivity, ConfirmTaskActivity::class.java).putExtra(TASK_ID, task))
+                            finish()
+                        }
+                    })
+                }
+            }
+        }
     }
 
     companion object {
