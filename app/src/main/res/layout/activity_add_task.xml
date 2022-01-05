@@ -37,14 +37,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="32dp" />
+                app:layout_constraintGuide_begin="16dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="32dp" />
+                app:layout_constraintGuide_end="16dp" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_task"
@@ -70,12 +70,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="@string/label_title"
-                app:counterMaxLength="30"
-                app:counterEnabled="true"
                 app:endIconMode="custom"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guide_end"
-                app:layout_constraintStart_toStartOf="@id/guide_start">
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopStart="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tiet_title"
@@ -83,6 +85,32 @@
                     android:maxLength="30"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_description"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/label_description"
+                app:counterMaxLength="200"
+                app:counterEnabled="true"
+                app:endIconMode="custom"
+                app:layout_constraintTop_toBottomOf="@id/til_title"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopStart="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_description"
+                    android:layout_width="match_parent"
+                    android:maxLength="200"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -96,7 +124,11 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toStartOf="@id/til_hour"
                 app:layout_constraintStart_toStartOf="@id/guide_start"
-                app:layout_constraintTop_toBottomOf="@id/til_title"
+                app:layout_constraintTop_toBottomOf="@id/til_description"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -117,7 +149,11 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="@id/guide_end"
                 app:layout_constraintStart_toEndOf="@id/til_date"
-                app:layout_constraintTop_toTopOf="@id/til_date">
+                app:layout_constraintTop_toTopOf="@id/til_date"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopStart="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tiet_hour"
@@ -125,28 +161,6 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_description"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/label_description"
-                app:counterMaxLength="200"
-                app:counterEnabled="true"
-                app:endIconMode="custom"
-                app:layout_constraintTop_toBottomOf="@id/til_hour"
-                app:layout_constraintEnd_toEndOf="@id/guide_end"
-                app:layout_constraintStart_toStartOf="@id/guide_start">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tiet_description"
-                    android:layout_width="match_parent"
-                    android:maxLength="200"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -158,7 +172,7 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/label_warned_task"
                 app:layout_constraintEnd_toStartOf="@id/til_timer"
-                app:layout_constraintTop_toBottomOf="@id/til_description"
+                app:layout_constraintTop_toBottomOf="@id/til_date"
                 app:layout_constraintStart_toStartOf="@id/guide_start">
 
                 <AutoCompleteTextView
