@@ -5,6 +5,7 @@
     <string name="label_date">Data</string>
     <string name="label_hour">Horário</string>
     <string name="label_cancel">Cancelar</string>
+    <string name="label_save">Salvar</string>
     <string name="label_tasks">Tarefas</string>
     <string name="label_description_new_task">Nova tarefa</string>
     <string name="label_edit">Editar</string>
@@ -15,4 +16,8 @@
     <string name="label_warned_task">Lembrar Tarefa</string>
     <string name="label_remember">Lembrar faltando</string>
     <string name="label_task_type">Tipo de Tarefa</string>
+    <string name="label_no_remember_task_description">Fique ligado e não esqueça de fazer sua tarefa no horário.</string>
+    <string name="label_remember_task_description">Agora é só esperar que a gente te avisa quando sua tarefa estiver próxima do horário marcado.</string>
+    <string name="label_back">Voltar</string>
+    <string name="label_task_registred">Sua tarefa foi registrada.</string>
 </resources>

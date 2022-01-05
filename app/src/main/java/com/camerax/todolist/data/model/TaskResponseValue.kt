@@ -14,7 +14,6 @@ data class TaskResponseValue(
     val date: String,
     val hour: String,
     val description: String,
-    val task_type: String,
     val remember_task: String,
     val remember_time: String,
     val timestamp_date: Long,

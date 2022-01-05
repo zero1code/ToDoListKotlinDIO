@@ -48,7 +48,7 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_task"
-                app:constraint_referenced_ids="til_title, til_date, til_hour, til_description, til_task_type, til_warned, til_timer, btn_new_task, btn_cancel"
+                app:constraint_referenced_ids="til_title, til_date, til_hour, til_description, til_warned, btn_new_task, btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -150,26 +150,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_task_type"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/label_task_type"
-                app:layout_constraintTop_toBottomOf="@id/til_description"
-                app:layout_constraintEnd_toEndOf="@id/guide_end"
-                app:layout_constraintStart_toStartOf="@id/guide_start">
-
-                <AutoCompleteTextView
-                    android:id="@+id/actv_task_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_warned"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
@@ -178,7 +158,7 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/label_warned_task"
                 app:layout_constraintEnd_toStartOf="@id/til_timer"
-                app:layout_constraintTop_toBottomOf="@id/til_task_type"
+                app:layout_constraintTop_toBottomOf="@id/til_description"
                 app:layout_constraintStart_toStartOf="@id/guide_start">
 
                 <AutoCompleteTextView
