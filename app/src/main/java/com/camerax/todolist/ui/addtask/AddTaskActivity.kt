@@ -46,31 +46,26 @@ class AddTaskActivity : AppCompatActivity() {
     private val viewModel by viewModel<AddTaskViewModel>()
     private val dialog by lazy { createProgressDialog() }
     private val binding by lazy { ActivityAddTaskBinding.inflate(layoutInflater) }
+    private val modalBottomSheet by lazy { ModalBottomSheet() }
     private lateinit var task: TaskResponseValue
-    private var alarmHour = ""
+    private var selectedData: Long = 0
     private var alarmMinute = ""
-    private var rememberTask = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        if (intent.hasExtra(TASK_ID)) {
-            binding.btnNewTask.text = getString(R.string.label_edit_task)
-            val taskId = intent.getIntExtra(TASK_ID, 0)
-            TaskDataSource.findById(taskId)?.let {
-                binding.tilTitle.text = it.title
-                binding.tilDate.text = it.date
-                binding.tilHour.text = it.hour
-            }
-        }
+//        if (intent.hasExtra(TASK_ID)) {
+//            binding.btnNewTask.text = getString(R.string.label_edit_task)
+//            val taskId = intent.getIntExtra(TASK_ID, 0)
+//            TaskDataSource.findById(taskId)?.let {
+//                binding.tilTitle.text = it.title
+//                binding.tilDate.text = it.date
+//                binding.tilHour.text = it.hour
+//            }
+//        }
 
         bindObserve()
-
-        val warnedOptionsItems = listOf("Sim", "Não")
-        val warnedAdapter =
-            ArrayAdapter(applicationContext, R.layout.list_item_task_type, warnedOptionsItems)
-        (binding.actvWarned as? AutoCompleteTextView)?.setAdapter(warnedAdapter)
 
         insertListeners()
         tieListeners()
@@ -85,38 +80,6 @@ class AddTaskActivity : AppCompatActivity() {
                     applicationContext.getDrawable(R.drawable.ic_check)
             } else {
                 binding.tilTitle.endIconDrawable = null
-            }
-        }
-
-        binding.tietDate.doOnTextChanged { text, start, before, count ->
-            if (text!!.isNotEmpty()) {
-                binding.tilDate.error = null
-                setEndIconTintFromTheme(applicationContext, binding.tilDate)
-                binding.tilDate.endIconDrawable =
-                    applicationContext.getDrawable(R.drawable.ic_check)
-            } else {
-                binding.tilDate.endIconDrawable = null
-            }
-        }
-
-        binding.tietHour.doOnTextChanged { text, start, before, count ->
-            if (text!!.isNotEmpty()) {
-                binding.tilHour.error = null
-                setEndIconTintFromTheme(applicationContext, binding.tilHour)
-                binding.tilHour.endIconDrawable =
-                    applicationContext.getDrawable(R.drawable.ic_check)
-            } else {
-                binding.tilHour.endIconDrawable = null
-            }
-        }
-
-        binding.actvWarned.doOnTextChanged { text, start, before, count ->
-            if (text!!.contains("Sim")) {
-                rememberTask = true
-                binding.tilTimer.visibility = View.VISIBLE
-            } else {
-                rememberTask = false
-                binding.tilTimer.visibility = View.INVISIBLE
             }
         }
     }
@@ -143,17 +106,22 @@ class AddTaskActivity : AppCompatActivity() {
     }
 
     private fun insertListeners() {
-        binding.tilDate.editText?.setOnClickListener {
-            val datePicker = MaterialDatePicker.Builder.datePicker().build()
-            datePicker.addOnPositiveButtonClickListener {
-                val timeZone = TimeZone.getDefault()
-                val offset = timeZone.getOffset(Date().time) * -1
-                binding.tilDate.text = Date(it + offset).format()
-            }
-            datePicker.show(supportFragmentManager, "DATE_PICKER_TAG")
+        binding.chDate.setOnClickListener {
+            modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
+
+
+//            val datePicker = MaterialDatePicker.Builder.datePicker().build()
+//            datePicker.addOnPositiveButtonClickListener {
+//                val timeZone = TimeZone.getDefault()
+//                val offset = timeZone.getOffset(Date().time) * -1
+//                selectedData = it + offset
+//                binding.chDate.text = Date(it + offset).format()
+//                binding.btnClearChips.visibility = View.VISIBLE
+//            }
+//            datePicker.show(supportFragmentManager, "DATE_PICKER_TAG")
         }
 
-        binding.tilHour.editText?.setOnClickListener {
+        binding.chTime.setOnClickListener {
             val timerPicker = MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .build()
@@ -164,48 +132,55 @@ class AddTaskActivity : AppCompatActivity() {
                 val hour =
                     if (timerPicker.hour in 0..9) "0${timerPicker.hour}" else timerPicker.hour
 
-                binding.tilHour.text = "${hour}:${minute}"
+                binding.chTime.text = "${hour}:${minute}"
             }
             timerPicker.show(supportFragmentManager, null)
         }
 
-        binding.tilTimer.editText?.setOnClickListener {
-            val picker =
-                MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setInputMode(INPUT_MODE_KEYBOARD)
-                    .setHour(0)
-                    .setMinute(0)
-                    .setTitleText("Me lembrar da tarefa faltando")
-                    .build()
+        binding.btnClearChips.setOnClickListener {
+            binding.chDate.text = getString(R.string.label_date)
+            binding.chTime.text = getString(R.string.label_hour)
+            binding.btnClearChips.visibility = View.GONE
+        }
 
-            picker.addOnPositiveButtonClickListener {
+        binding.btnAddReminder.setOnClickListener {
+            binding.chipReminderGroup.visibility = View.VISIBLE
+            binding.btnAddReminder.visibility = View.INVISIBLE
+        }
+
+        binding.chReminderDate.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker().build()
+                 datePicker.addOnPositiveButtonClickListener {
+                val timeZone = TimeZone.getDefault()
+                val offset = timeZone.getOffset(Date().time) * -1
+                binding.chReminderDate.text = Date(it + offset).format()
+                binding.btnClearChipsReminder.visibility = View.VISIBLE
+            }
+            datePicker.show(supportFragmentManager, "DATE_PICKER_TAG")
+        }
+
+        binding.chReminderTime.setOnClickListener {
+            val timerPicker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .build()
+            timerPicker.addOnPositiveButtonClickListener {
                 val minute =
-                    if (picker.minute in 0..9) "0${picker.minute}" else picker.minute
+                    if (timerPicker.minute in 0..9) "0${timerPicker.minute}" else timerPicker.minute
 
                 val hour =
-                    if (picker.hour in 0..9) "0${picker.hour}" else picker.hour
+                    if (timerPicker.hour in 0..9) "0${timerPicker.hour}" else timerPicker.hour
 
-                if (picker.hour == 0) {
-                    val txt = "minuto" + if (picker.minute > 1) "s" else ""
-                    binding.tilTimer.text = "$minute $txt"
-                }
-
-                if (picker.minute == 0) {
-                    val txt = "hora" + if (picker.hour > 1) "s" else ""
-                    binding.tilTimer.text = "$hour $txt"
-                }
-
-                if (picker.hour != 0 && picker.minute != 0) {
-                    binding.tilTimer.text = "${hour}h e $minute min"
-                }
-
-                alarmHour = if (picker.hour in 0..9) "0${picker.hour}" else picker.hour.toString()
-                alarmMinute = if (picker.minute in 0..9) "0${picker.minute}" else picker.minute.toString()
-
+                binding.chReminderTime.text = "${hour}:${minute}"
             }
+            timerPicker.show(supportFragmentManager, null)
+        }
 
-            picker.show(supportFragmentManager, null)
+        binding.btnClearChipsReminder.setOnClickListener {
+            binding.chReminderDate.text = getString(R.string.label_date)
+            binding.chReminderTime.text = getString(R.string.label_hour)
+            binding.chipReminderGroup.visibility = View.INVISIBLE
+            binding.btnClearChipsReminder.visibility = View.INVISIBLE
+            binding.btnAddReminder.visibility = View.VISIBLE
         }
 
         binding.btnCancel.setOnClickListener {
@@ -216,31 +191,22 @@ class AddTaskActivity : AppCompatActivity() {
             if (checkFormulario()) {
 
                 val sdfd = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                val sdfa = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-                val date = sdfd.parse("${binding.tilDate.text} ${binding.tilHour.text}")
-
-                var timestampAlarm: Long = 0
-                if (rememberTask) {
-                    val timeDate = sdfa.parse(binding.tilHour.text)!!.time
-                    val timeAlarm = sdfa.parse("$alarmHour:$alarmMinute")!!.time
-
-                    val alarmTime = timeDate.minus(timeAlarm)
-                    val alarmHour = TimeUnit.MILLISECONDS.toHours(alarmTime) % 24
-                    val alarmMinute = TimeUnit.MILLISECONDS.toMinutes(alarmTime) % 60
-                    timestampAlarm = sdfd.parse("${binding.tilDate.text} $alarmHour:$alarmMinute")!!.time.div(1000)
-                }
-
+                val date = sdfd.parse("${binding.chDate.text} ${binding.chTime.text}")
                 val timestampDate = (date.time.div(1000))
+
+                val reminder = sdfd.parse("${binding.chReminderDate.text} ${binding.chReminderTime.text}")
+                val timestampAlarm = (reminder.time.div(1000))
+
 
                 task = TaskResponseValue(
                     id = 0,
                     title = binding.tilTitle.text,
-                    date = binding.tilDate.text,
-                    hour = binding.tilHour.text,
                     description = binding.tilDescription.text,
-                    remember_task = binding.tilWarned.text,
-                    remember_time = binding.tilTimer.text,
+                    date = binding.chDate.text.toString(),
+                    hour = binding.chTime.text.toString(),
+                    reminder_date = binding.chReminderDate.text.toString(),
+                    reminder_time = binding.chReminderTime.text.toString(),
                     timestamp_date = timestampDate,
                     timestamp_alarm = timestampAlarm
                 )
@@ -254,21 +220,6 @@ class AddTaskActivity : AppCompatActivity() {
     private fun checkFormulario(): Boolean {
         if (binding.tilTitle.text.isEmpty()) {
             binding.tilTitle.error = "Defina um título."
-            return false
-        }
-
-        if (binding.tilDate.text.isEmpty()) {
-            binding.tilDate.error = "Defina uma data."
-            return false
-        }
-
-        if (binding.tilHour.text.isEmpty()) {
-            binding.tilHour.error = "Defina um horário."
-            return false
-        }
-
-        if (binding.tilWarned.text.isEmpty()) {
-            binding.tilWarned.error = "Campo obrigatório."
             return false
         }
 
@@ -311,7 +262,6 @@ class AddTaskActivity : AppCompatActivity() {
                     dialog.dismiss()
                     binding.appBar.visibility = View.GONE
                     binding.groupTask.visibility = View.GONE
-                    binding.tilTimer.visibility = View.GONE
                     binding.confirmAnimation.visibility = View.VISIBLE
                     binding.confirmAnimation.playAnimation()
                     binding.confirmAnimation.addAnimatorListener(object : Animator.AnimatorListener {

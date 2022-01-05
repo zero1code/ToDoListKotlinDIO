@@ -14,8 +14,8 @@ data class TaskResponseValue(
     val date: String,
     val hour: String,
     val description: String,
-    val remember_task: String,
-    val remember_time: String,
+    val reminder_date: String,
+    val reminder_time: String,
     val timestamp_date: Long,
     val timestamp_alarm: Long
 

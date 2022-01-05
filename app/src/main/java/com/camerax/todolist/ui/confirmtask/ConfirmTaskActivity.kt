@@ -21,24 +21,15 @@ class ConfirmTaskActivity : AppCompatActivity() {
             binding.tvTitle.text = Html.fromHtml("<b>${task.title}</b>", 0)
             binding.tvDate.text = Html.fromHtml("<b>Data: </b>${task.date} às ${task.hour}.", 0)
             binding.tvDescription.text = Html.fromHtml("<b>Descrição: </b>${task.description}", 0)
-            binding.tvRememberTask.text = if (task.remember_task.contains("Não"))
-                Html.fromHtml("<b>Lembrar tarefa: </b>${task.remember_task}", 0)
-            else Html.fromHtml(
-                "<b>Lembrar tarefa: </b>${task.remember_task}</b>, faltando ${task.remember_time}.",
-                0
-            )
+
         } else {
             binding.tvTitle.text = Html.fromHtml("<b>${task.title}</b>")
             binding.tvDate.text = Html.fromHtml("<b>Data: </b>${task.date} às ${task.hour}.")
             binding.tvDescription.text = Html.fromHtml("<b>Descrição: </b>${task.description}")
-            binding.tvRememberTask.text = if (task.remember_task.contains("Não"))
-                Html.fromHtml("<b>Lembrar tarefa: </b>${task.remember_task}")
-            else Html.fromHtml(
-                "<b>Lembrar tarefa: </b>${task.remember_task}</b>, faltando ${task.remember_time}."
-            )
+
         }
 
-        if (task.remember_task.contains("Não")) {
+        if (task.id.equals(0)) {
             binding.tvConfDetails.text = getString(R.string.label_no_remember_task_description)
         } else {
             binding.tvConfDetails.text = getString(R.string.label_remember_task_description)

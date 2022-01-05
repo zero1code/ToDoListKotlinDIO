@@ -7,7 +7,7 @@ import java.util.*
 private val locale = Locale("pt", "BR")
 
 fun Date.format() : String {
-    return SimpleDateFormat("dd/MM/yyyy", locale).format(this)
+    return SimpleDateFormat("E, dd 'de' MMM", locale).format(this)
 }
 
 var TextInputLayout.text : String

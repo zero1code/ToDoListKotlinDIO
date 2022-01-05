@@ -3,9 +3,10 @@
     <string name="label_new_task">Criar Tarefa</string>
     <string name="label_title">Título</string>
     <string name="label_date">Data</string>
-    <string name="label_hour">Horário</string>
+    <string name="label_hour">Definir Horário</string>
     <string name="label_cancel">Cancelar</string>
     <string name="label_save">Salvar</string>
+    <string name="label_select">Selecionar</string>
     <string name="label_tasks">Tarefas</string>
     <string name="label_description_new_task">Nova tarefa</string>
     <string name="label_edit">Editar</string>

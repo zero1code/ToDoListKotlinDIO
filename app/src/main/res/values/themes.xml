@@ -8,6 +8,7 @@
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="chipStyle">@style/Widget.App.Chip</item>
     </style>
 
     <style name="Theme.Button.Success" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -50,5 +51,14 @@
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+<!--        <item name="chipIconTint">@color/shrine_pink_900</item>-->
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="chipStrokeColor">@color/black</item>
+        <item name="checkedIconVisible">false</item>
+<!--        <item name="shapeAppearanceOverlay">@null</item>-->
     </style>
 </resources>
