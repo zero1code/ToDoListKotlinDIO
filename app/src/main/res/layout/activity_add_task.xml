@@ -17,7 +17,8 @@
             android:layout_height="?attr/actionBarSize"
             app:title="@string/label_new_task"
             app:navigationIcon="@drawable/ic_navigate"
-            style="@style/Widget.MaterialComponents.Toolbar.Surface"
+            android:background="#FAFAFA"
+            style="@style/Toolbar"
             />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -48,7 +49,7 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_task"
-                app:constraint_referenced_ids=" cv_title, btn_new_task, btn_cancel"
+                app:constraint_referenced_ids=" cv_title, cv_date, btn_new_task, btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -70,8 +71,9 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guide_start"
                 app:layout_constraintEnd_toStartOf="@id/guide_end"
-                app:cardCornerRadius="8dp"
-                android:layout_marginTop="8dp">
+                app:cardCornerRadius="4dp"
+                android:layout_marginTop="8dp"
+                app:cardElevation="8dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -139,7 +141,8 @@
                 app:layout_constraintTop_toBottomOf="@id/cv_title"
                 app:layout_constraintStart_toEndOf="@id/guide_start"
                 app:layout_constraintEnd_toStartOf="@id/guide_end"
-                app:cardCornerRadius="8dp">
+                app:cardCornerRadius="4dp"
+                app:cardElevation="8dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

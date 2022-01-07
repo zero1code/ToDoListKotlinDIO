@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.ToDoList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/black</item>
@@ -7,10 +7,18 @@
         <item name="colorSecondary">@color/black</item>
         <item name="colorOnSecondary">@color/white</item>
 
+        <item name="android:windowBackground">@color/background_color</item>
+
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
         <item name="chipStyle">@style/Widget.App.Chip</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
     </style>
 
+    <style name="Toolbar" parent="@style/Widget.MaterialComponents.Toolbar.Surface">
+        <item name="android:background">@color/background_color</item>
+    </style>
+
+    <!--    Botão sucesso-->
     <style name="Theme.Button.Success" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:paddingLeft">@dimen/mtrl_btn_padding_left</item>
         <item name="android:paddingRight">@dimen/mtrl_btn_padding_right</item>
@@ -21,9 +29,11 @@
         <item name="android:textColor">@color/green</item>
     </style>
 
+    <!--    Dialog-->
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
 
@@ -33,32 +43,56 @@
         <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
     </style>
 
-    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-    </style>
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text"></style>
 
     <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
     </style>
 
-    <style name="ThemeOverlay.App.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-    </style>
+    <style name="ThemeOverlay.App.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog"></style>
 
     <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">cut</item>
+        <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
 
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">4dp</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
+    <!--    Dialog-->
 
+    <!--    Chip-->
     <style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Choice">
-<!--        <item name="chipIconTint">@color/shrine_pink_900</item>-->
+        <!--        <item name="chipIconTint">@color/shrine_pink_900</item>-->
         <item name="chipBackgroundColor">@color/white</item>
         <item name="chipStrokeWidth">2dp</item>
         <item name="chipStrokeColor">@color/black</item>
         <item name="checkedIconVisible">false</item>
-<!--        <item name="shapeAppearanceOverlay">@null</item>-->
+        <!--        <item name="shapeAppearanceOverlay">@null</item>-->
     </style>
+    <!--    Chip-->
+
+    <!--    BottomSheet-->
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottomsheet</item>
+<!--        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>-->
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <!--    BottomSheet-->
 </resources>

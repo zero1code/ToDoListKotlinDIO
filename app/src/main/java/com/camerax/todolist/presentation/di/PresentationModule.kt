@@ -1,6 +1,7 @@
 package com.camerax.todolist.presentation.di
 
 import com.camerax.todolist.presentation.AddTaskViewModel
+import com.camerax.todolist.presentation.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -14,6 +15,7 @@ object PresentationModule {
     private fun viewModelModules(): Module {
         return module {
             viewModel { AddTaskViewModel(get()) }
+            viewModel { MainViewModel(get(), get()) }
         }
     }
 }

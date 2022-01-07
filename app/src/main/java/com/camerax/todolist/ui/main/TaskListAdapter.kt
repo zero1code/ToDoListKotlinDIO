@@ -1,4 +1,4 @@
-package com.camerax.todolist.ui
+package com.camerax.todolist.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.camerax.todolist.R
+import com.camerax.todolist.data.model.TaskResponseValue
 import com.camerax.todolist.databinding.ItemTaskBinding
 import com.camerax.todolist.model.Task
 
-class TaskListAdapter : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(DiffCallback()) {
+class TaskListAdapter : ListAdapter<TaskResponseValue, TaskListAdapter.TaskViewHolder>(DiffCallback()) {
 
-    var listenerEdit : (Task) -> Unit = {}
-    var listenerDelete : (Task) -> Unit = {}
+    var listenerEdit : (TaskResponseValue) -> Unit = {}
+    var listenerDelete : (TaskResponseValue) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -28,7 +29,7 @@ class TaskListAdapter : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(DiffCa
     inner class TaskViewHolder(
             private val binding: ItemTaskBinding
         ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Task) {
+        fun bind(item: TaskResponseValue) {
             binding.tvTitle.text = item.title
             binding.tvDate.text = "${item.date} às ${item.hour}"
             binding.ivMore.setOnClickListener {
@@ -36,7 +37,7 @@ class TaskListAdapter : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(DiffCa
             }
         }
 
-        private fun showPopUp(item: Task) {
+        private fun showPopUp(item: TaskResponseValue) {
             val ivMore = binding.ivMore
             val popupMenu = PopupMenu(ivMore.context, ivMore)
             popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
@@ -53,9 +54,9 @@ class TaskListAdapter : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(DiffCa
     }
 }
 
-class DiffCallback : DiffUtil.ItemCallback<Task>() {
-    override fun areItemsTheSame(oldItem: Task, newItem: Task) = oldItem == newItem
+class DiffCallback : DiffUtil.ItemCallback<TaskResponseValue>() {
+    override fun areItemsTheSame(oldItem: TaskResponseValue, newItem: TaskResponseValue) = oldItem == newItem
 
-    override fun areContentsTheSame(oldItem: Task, newItem: Task) = oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: TaskResponseValue, newItem: TaskResponseValue) = oldItem.id == newItem.id
 
 }

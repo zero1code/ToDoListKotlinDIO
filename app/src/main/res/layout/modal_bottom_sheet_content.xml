@@ -1,45 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/standard_bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        android:id="@+id/standard_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <CalendarView
-            android:id="@+id/calendar_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_cancel"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/label_cancel"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toStartOf="@id/btn_confirm"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendar_view" />
+            <View
+                android:id="@+id/ic_view"
+                android:layout_width="60dp"
+                android:layout_height="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/calendar_view"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/background_color"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_confirm"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/label_select"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_cancel"
-            app:layout_constraintTop_toBottomOf="@id/calendar_view" />
+            <CalendarView
+                android:id="@+id/calendar_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/ic_view"
+                android:paddingBottom="8dp"
+                style="@style/Widget.MaterialComponents.MaterialCalendar.Fullscreen"
+                />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/label_cancel"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toStartOf="@id/btn_confirm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/calendar_view" />
 
-</FrameLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/label_select"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_cancel"
+                app:layout_constraintTop_toBottomOf="@id/calendar_view" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_today"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="@string/label_today"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_confirm"
+                app:layout_constraintEnd_toEndOf="@+id/btn_confirm"
+              />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

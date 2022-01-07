@@ -29,7 +29,7 @@ class ConfirmTaskActivity : AppCompatActivity() {
 
         }
 
-        if (task.id.equals(0)) {
+        if (task.timestamp_alarm == 0L) {
             binding.tvConfDetails.text = getString(R.string.label_no_remember_task_description)
         } else {
             binding.tvConfDetails.text = getString(R.string.label_remember_task_description)

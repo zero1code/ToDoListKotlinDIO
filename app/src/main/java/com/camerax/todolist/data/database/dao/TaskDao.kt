@@ -1,9 +1,6 @@
 package com.camerax.todolist.data.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.camerax.todolist.data.model.TaskResponseValue
 import kotlinx.coroutines.flow.Flow
 
@@ -14,5 +11,8 @@ interface TaskDao {
     fun findAll(): Flow<List<TaskResponseValue>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(entity: TaskResponseValue)
+    suspend fun save(entity: TaskResponseValue): Long
+
+    @Query("DELETE from tb_tasks where id = :id")
+    fun deleteTask(id: Long)
 }

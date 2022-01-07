@@ -3,7 +3,10 @@ package com.camerax.todolist.data.repository
 import com.camerax.todolist.data.database.AppDatabase
 import com.camerax.todolist.data.model.TaskResponseValue
 import com.camerax.todolist.model.Task
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class TaskRespositoryImpl(
     appDatabase: AppDatabase,
@@ -17,5 +20,11 @@ class TaskRespositoryImpl(
 
     override fun list(): Flow<List<TaskResponseValue>> {
         return dao.findAll()
+    }
+
+    override suspend fun delete(id: Long) {
+        GlobalScope.launch(Dispatchers.IO) {
+            dao.deleteTask(id)
+        }
     }
 }

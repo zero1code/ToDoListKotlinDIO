@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/bg_bottomsheet.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_calendar.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_check.xml" value="0.3828125" />
+        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_navigate.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_notification.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_timer.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/round_image_view_click.xml" value="0.21302083333333333" />
@@ -14,6 +16,7 @@
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/dialog_add_task_type.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/empty_state.xml" value="0.196875" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/item_task.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/list_item_task_type.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/modal_bottom_sheet_content.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/menu/popup_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/drawable/ic_check.xml" value="0.2703125" />

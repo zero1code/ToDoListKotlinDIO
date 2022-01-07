@@ -1,43 +1,35 @@
 package com.camerax.todolist.ui.addtask
 
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.os.Bundle
-import android.system.Os.accept
 import android.util.Log
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
-import android.widget.Toast
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.sqlite.db.SupportSQLiteCompat.Api16Impl.cancel
 import com.camerax.todolist.R
 import com.camerax.todolist.core.extensions.createDialog
 import com.camerax.todolist.core.extensions.createProgressDialog
-import com.camerax.todolist.databinding.ActivityAddTaskBinding
-import com.camerax.todolist.data.TaskDataSource
-import com.camerax.todolist.data.model.TaskResponseValue
 import com.camerax.todolist.core.extensions.format
 import com.camerax.todolist.core.extensions.text
+import com.camerax.todolist.data.model.TaskResponseValue
+import com.camerax.todolist.databinding.ActivityAddTaskBinding
 import com.camerax.todolist.presentation.AddTaskViewModel
 import com.camerax.todolist.ui.confirmtask.ConfirmTaskActivity
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.Result.Companion.success
 
 
@@ -47,23 +39,14 @@ class AddTaskActivity : AppCompatActivity() {
     private val dialog by lazy { createProgressDialog() }
     private val binding by lazy { ActivityAddTaskBinding.inflate(layoutInflater) }
     private val modalBottomSheet by lazy { ModalBottomSheet() }
+    private lateinit var bottomSheetListener: BottomSheetListener
     private lateinit var task: TaskResponseValue
-    private var selectedData: Long = 0
-    private var alarmMinute = ""
+    private var reminderYear = 0L
+    private var dateYear= 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-//        if (intent.hasExtra(TASK_ID)) {
-//            binding.btnNewTask.text = getString(R.string.label_edit_task)
-//            val taskId = intent.getIntExtra(TASK_ID, 0)
-//            TaskDataSource.findById(taskId)?.let {
-//                binding.tilTitle.text = it.title
-//                binding.tilDate.text = it.date
-//                binding.tilHour.text = it.hour
-//            }
-//        }
 
         bindObserve()
 
@@ -84,46 +67,32 @@ class AddTaskActivity : AppCompatActivity() {
         }
     }
 
-    private fun addTaskType() {
-
-
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_add_task_type, null)
-
-        val editText = dialogView.findViewById<EditText>(R.id.tiet_new_task_type)
-
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Adicionar tipo")
-            .setView(dialogView)
-            .setNegativeButton(resources.getString(R.string.label_cancel)) { dialog, which ->
-                // Respond to negative button press
-            }
-            .setPositiveButton(resources.getString(R.string.label_save)) { dialog, which ->
-                Toast.makeText(this, editText.text, Toast.LENGTH_SHORT).show()
-            }
-            .show()
-    }
-
+    @SuppressLint("SimpleDateFormat")
     private fun insertListeners() {
         binding.chDate.setOnClickListener {
+            binding.chDate.clearAnimation()
+            if (binding.chDate.text.contains("Data")) ModalBottomSheet.timestampDate =
+                0 else ModalBottomSheet.timestampDate
             modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
-
-
-//            val datePicker = MaterialDatePicker.Builder.datePicker().build()
-//            datePicker.addOnPositiveButtonClickListener {
-//                val timeZone = TimeZone.getDefault()
-//                val offset = timeZone.getOffset(Date().time) * -1
-//                selectedData = it + offset
-//                binding.chDate.text = Date(it + offset).format()
-//                binding.btnClearChips.visibility = View.VISIBLE
-//            }
-//            datePicker.show(supportFragmentManager, "DATE_PICKER_TAG")
+            bottomSheetListener = object : BottomSheetListener {
+                override fun onClick(selectedDate: Long) {
+                    dateYear = SimpleDateFormat("yyyy").format(Date(selectedDate)).toLong()
+                    binding.chDate.text = Date(selectedDate).format()
+                    binding.btnClearChips.visibility = View.VISIBLE
+                    ModalBottomSheet.timestampDate = selectedDate
+                    modalBottomSheet.dismiss()
+                }
+            }
+            modalBottomSheet.listener(bottomSheetListener)
         }
 
         binding.chTime.setOnClickListener {
+            binding.chTime.clearAnimation()
+            val hourNow = SimpleDateFormat("HH").format(Date(Date().time)).toInt()
             val timerPicker = MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(hourNow)
+                .setMinute(0)
                 .build()
             timerPicker.addOnPositiveButtonClickListener {
                 val minute =
@@ -144,33 +113,59 @@ class AddTaskActivity : AppCompatActivity() {
         }
 
         binding.btnAddReminder.setOnClickListener {
-            binding.chipReminderGroup.visibility = View.VISIBLE
-            binding.btnAddReminder.visibility = View.INVISIBLE
+
+            if (binding.chReminderDate.text.contains("Data")) ModalBottomSheet.timestampDate =
+                0 else ModalBottomSheet.timestampDate
+            modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
+            bottomSheetListener = object : BottomSheetListener {
+                override fun onClick(selectedDate: Long) {
+                    reminderYear = SimpleDateFormat("yyyy").format(Date(selectedDate)).toLong()
+                    binding.chReminderDate.text = Date(selectedDate).format()
+                    binding.btnClearChipsReminder.visibility = View.VISIBLE
+                    binding.chipReminderGroup.visibility = View.VISIBLE
+                    binding.btnAddReminder.visibility = View.INVISIBLE
+                    ModalBottomSheet.timestampDate = selectedDate
+                    modalBottomSheet.dismiss()
+                }
+            }
+            modalBottomSheet.listener(bottomSheetListener)
         }
 
         binding.chReminderDate.setOnClickListener {
-            val datePicker = MaterialDatePicker.Builder.datePicker().build()
-                 datePicker.addOnPositiveButtonClickListener {
-                val timeZone = TimeZone.getDefault()
-                val offset = timeZone.getOffset(Date().time) * -1
-                binding.chReminderDate.text = Date(it + offset).format()
-                binding.btnClearChipsReminder.visibility = View.VISIBLE
+            if (binding.chDate.text.contains("Data")) ModalBottomSheet.timestampDate =
+                0 else ModalBottomSheet.timestampDate
+            modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
+            bottomSheetListener = object : BottomSheetListener {
+                override fun onClick(selectedDate: Long) {
+                    reminderYear = SimpleDateFormat("yyyy").format(Date(selectedDate)).toLong()
+                    binding.chReminderDate.text = Date(selectedDate).format()
+                    binding.btnClearChipsReminder.visibility = View.VISIBLE
+                    ModalBottomSheet.timestampDate = selectedDate
+                    modalBottomSheet.dismiss()
+                }
             }
-            datePicker.show(supportFragmentManager, "DATE_PICKER_TAG")
+            modalBottomSheet.listener(bottomSheetListener)
         }
 
         binding.chReminderTime.setOnClickListener {
+            binding.chReminderTime.clearAnimation()
+            val hourNow = SimpleDateFormat("HH").format(Date(Date().time)).toInt()
             val timerPicker = MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(hourNow)
+                .setMinute(0)
                 .build()
             timerPicker.addOnPositiveButtonClickListener {
-                val minute =
-                    if (timerPicker.minute in 0..9) "0${timerPicker.minute}" else timerPicker.minute
 
-                val hour =
-                    if (timerPicker.hour in 0..9) "0${timerPicker.hour}" else timerPicker.hour
+                if (checkReminderTime(timerPicker.hour, timerPicker.minute)) {
+                    val minute =
+                        if (timerPicker.minute in 0..9) "0${timerPicker.minute}" else timerPicker.minute
 
-                binding.chReminderTime.text = "${hour}:${minute}"
+                    val hour =
+                        if (timerPicker.hour in 0..9) "0${timerPicker.hour}" else timerPicker.hour
+
+                    binding.chReminderTime.text = "${hour}:${minute}"
+                }
             }
             timerPicker.show(supportFragmentManager, null)
         }
@@ -190,13 +185,17 @@ class AddTaskActivity : AppCompatActivity() {
         binding.btnNewTask.setOnClickListener {
             if (checkFormulario()) {
 
-                val sdfd = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                val sdfd = SimpleDateFormat("E, dd 'de' MMM yyyy HH:mm", Locale.getDefault())
 
-                val date = sdfd.parse("${binding.chDate.text} ${binding.chTime.text}")
+                val date = sdfd.parse("${binding.chDate.text} $dateYear ${binding.chTime.text}")
                 val timestampDate = (date.time.div(1000))
 
-                val reminder = sdfd.parse("${binding.chReminderDate.text} ${binding.chReminderTime.text}")
-                val timestampAlarm = (reminder.time.div(1000))
+                var timestampAlarm= 0L
+                if (!binding.chReminderDate.text.contains("Data")) {
+                    val reminder =
+                        sdfd.parse("${binding.chReminderDate.text} $reminderYear ${binding.chReminderTime.text}")
+                    timestampAlarm = (reminder.time.div(1000))
+                }
 
 
                 task = TaskResponseValue(
@@ -210,16 +209,96 @@ class AddTaskActivity : AppCompatActivity() {
                     timestamp_date = timestampDate,
                     timestamp_alarm = timestampAlarm
                 )
-                viewModel.saveTask(task)
+                val id = viewModel.saveTask(task)
+                Log.d("TAG", "insertListeners: $id")
 
                 setResult(RESULT_OK)
             }
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private fun checkReminderTime(hourSelected: Int, minSelected: Int): Boolean {
+        val hourNow = SimpleDateFormat("HH").format(Date(Date().time)).toInt()
+        val minNow = SimpleDateFormat("mm").format(Date(Date().time)).toInt()
+        val dateNow = SimpleDateFormat("dd").format(Date(Date().time)).toInt()
+        val yearNow = SimpleDateFormat("yyyy").format(Date(Date().time)).toInt()
+        val monthNow = SimpleDateFormat("M").format(Date(Date().time)).toInt()
+
+        val dateSelected =
+            SimpleDateFormat("dd").format(Date(ModalBottomSheet.timestampDate)).toInt()
+        val yearSelected =
+            SimpleDateFormat("yyyy").format(Date(ModalBottomSheet.timestampDate)).toInt()
+        val monthSelected =
+            SimpleDateFormat("M").format(Date(ModalBottomSheet.timestampDate)).toInt()
+
+        if (hourNow == hourSelected) {
+            if (minNow > minSelected && dateNow == dateSelected && yearNow == yearSelected) {
+                createDialog {
+                    setMessage("Não é possível criar um lembrete com a data menor que a atual: $dateNow/$monthNow/$yearNow $hourNow:$minNow.")
+                }.show()
+                return false
+            }
+        } else {
+            if (hourNow > hourSelected && dateNow == dateSelected && yearNow == yearSelected) {
+                createDialog {
+                    setMessage("Não é possível criar um lembrete com a data menor que a atual: $dateNow/$monthNow/$yearNow $hourNow:$minNow.")
+                }.show()
+                return false
+            }
+        }
+
+        return true
+    }
+
     private fun checkFormulario(): Boolean {
         if (binding.tilTitle.text.isEmpty()) {
             binding.tilTitle.error = "Defina um título."
+            return false
+        }
+
+        if (binding.chDate.text.contains("Data")) {
+            val animationblink = AnimationUtils.loadAnimation(applicationContext, R.anim.blink)
+            binding.chDate.startAnimation(animationblink)
+            Snackbar.make(
+                binding.root,
+                getString(R.string.label_error_no_task_date),
+                Snackbar.LENGTH_LONG
+            )
+                .setBackgroundTint(ContextCompat.getColor(applicationContext, R.color.red))
+                .setActionTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+                .show()
+
+            return false
+        }
+
+        if (binding.chTime.text.contains("Definir Horário")) {
+            val animationblink = AnimationUtils.loadAnimation(applicationContext, R.anim.blink)
+            binding.chTime.startAnimation(animationblink)
+            Snackbar.make(
+                binding.root,
+                getString(R.string.label_error_no_task_time),
+                Snackbar.LENGTH_LONG
+            )
+                .setBackgroundTint(ContextCompat.getColor(applicationContext, R.color.red))
+                .setActionTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+                .show()
+
+            return false
+        }
+
+        if (!binding.chReminderDate.text.contains("Data") && binding.chReminderTime.text.contains("Definir Horário")) {
+            val animationblink = AnimationUtils.loadAnimation(applicationContext, R.anim.blink)
+            binding.chReminderTime.startAnimation(animationblink)
+            Snackbar.make(
+                binding.root,
+                getString(R.string.label_error_no_reminder_task_time),
+                Snackbar.LENGTH_LONG
+            )
+                .setBackgroundTint(ContextCompat.getColor(applicationContext, R.color.red))
+                .setActionTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+                .show()
+
             return false
         }
 
@@ -264,15 +343,22 @@ class AddTaskActivity : AppCompatActivity() {
                     binding.groupTask.visibility = View.GONE
                     binding.confirmAnimation.visibility = View.VISIBLE
                     binding.confirmAnimation.playAnimation()
-                    binding.confirmAnimation.addAnimatorListener(object : Animator.AnimatorListener {
+                    binding.confirmAnimation.addAnimatorListener(object :
+                        Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
                         override fun onAnimationCancel(animation: Animator?) {}
                         override fun onAnimationStart(animation: Animator?) {}
 
 
                         override fun onAnimationEnd(animation: Animator?) {
-                            startActivity(Intent(this@AddTaskActivity, ConfirmTaskActivity::class.java).putExtra(
-                                TASK_ID, task))
+                            startActivity(
+                                Intent(
+                                    this@AddTaskActivity,
+                                    ConfirmTaskActivity::class.java
+                                ).putExtra(
+                                    TASK_ID, task
+                                )
+                            )
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                             finish()
                         }
