@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/standard_bottom_sheet"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ic_view"
+                android:layout_width="60dp"
+                android:layout_height="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/btn_delete_task"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardElevation="0dp"
+                android:backgroundTint="@color/background_color"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_delete_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_delete"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:background="?android:selectableItemBackgroundBorderless"
+                app:layout_constraintTop_toTopOf="@id/ic_view"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                android:contentDescription="@string/label_delete_task"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_edit_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_edit_calendar"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:background="?android:selectableItemBackgroundBorderless"
+                app:layout_constraintTop_toTopOf="@id/ic_view"
+                app:layout_constraintEnd_toStartOf="@id/btn_delete_task"
+                android:contentDescription="@string/label_edit_task"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toTopOf="@id/tv_title"
+                app:layout_constraintEnd_toStartOf="@id/tv_title"
+                app:layout_constraintBottom_toBottomOf="@id/tv_title" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/cv_icon"
+                app:layout_constraintTop_toBottomOf="@id/btn_delete_task" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date"
+                app:layout_constraintTop_toTopOf="@+id/tv_date"
+                app:srcCompat="@drawable/ic_calendar"
+                app:layout_constraintStart_toStartOf="@id/guide_start"/>
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/ic_calendar"
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/ic_calendar"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date_timer"
+                app:layout_constraintTop_toTopOf="@+id/tv_date_timer"
+                app:srcCompat="@drawable/ic_timer"
+                app:layout_constraintStart_toStartOf="@id/guide_start"/>
+
+            <TextView
+                android:id="@+id/tv_date_timer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toEndOf="@+id/ic_timer"
+                app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date_reminder"
+                app:layout_constraintTop_toTopOf="@+id/tv_date_reminder"
+                app:srcCompat="@drawable/ic_reminder"
+                app:layout_constraintStart_toStartOf="@id/guide_start"/>
+
+            <TextView
+                android:id="@+id/tv_date_reminder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toEndOf="@+id/ic_notification"
+                app:layout_constraintTop_toBottomOf="@id/tv_date_timer" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/label_cancel"
+                android:textAllCaps="false"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toStartOf="@id/btn_confirm"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_date_reminder" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/label_finished_task"
+                android:layout_marginTop="32dp"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toEndOf="@id/btn_cancel"
+                app:layout_constraintTop_toBottomOf="@id/tv_date_reminder" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

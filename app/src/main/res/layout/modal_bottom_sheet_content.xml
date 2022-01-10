@@ -16,7 +16,7 @@
             android:paddingBottom="16dp"
             android:paddingTop="8dp">
 
-            <View
+            <androidx.cardview.widget.CardView
                 android:id="@+id/ic_view"
                 android:layout_width="60dp"
                 android:layout_height="4dp"
@@ -24,7 +24,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/calendar_view"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/background_color"/>
+                app:cardElevation="0dp"
+                android:backgroundTint="@color/background_color"/>
 
             <CalendarView
                 android:id="@+id/calendar_view"

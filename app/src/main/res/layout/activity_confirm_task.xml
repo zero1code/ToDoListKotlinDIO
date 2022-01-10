@@ -7,6 +7,7 @@
     tools:context=".ui.confirmtask.ConfirmTaskActivity">
 
     <TextView
+        android:id="@+id/tv_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

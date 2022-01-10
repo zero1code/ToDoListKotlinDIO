@@ -17,6 +17,7 @@ data class TaskResponseValue(
     val reminder_date: String,
     val reminder_time: String,
     val timestamp_date: Long,
-    val timestamp_alarm: Long
+    val timestamp_alarm: Long,
+    val task_completed: Long
 
 ) : Serializable

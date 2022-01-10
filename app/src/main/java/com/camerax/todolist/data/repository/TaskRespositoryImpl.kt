@@ -27,4 +27,10 @@ class TaskRespositoryImpl(
             dao.deleteTask(id)
         }
     }
+
+    override suspend fun update(task: TaskResponseValue) {
+        GlobalScope.launch(Dispatchers.IO) {
+            dao.updateTask(task)
+        }
+    }
 }

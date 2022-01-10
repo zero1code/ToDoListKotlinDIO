@@ -17,6 +17,8 @@ class ConfirmTaskActivity : AppCompatActivity() {
 
         val task = intent.getSerializableExtra("task_id") as TaskResponseValue
 
+        binding.tvConfirm.text = if (task.id != 0L) resources.getString(R.string.label_task_updated) else resources.getString(R.string.label_task_registred)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             binding.tvTitle.text = Html.fromHtml("<b>${task.title}</b>", 0)
             binding.tvDate.text = Html.fromHtml("<b>Data: </b>${task.date} às ${task.hour}.", 0)

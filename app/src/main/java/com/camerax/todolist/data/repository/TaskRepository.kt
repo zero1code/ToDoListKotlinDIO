@@ -9,4 +9,5 @@ interface TaskRepository {
     suspend fun save(task: TaskResponseValue)
     fun list():Flow<List<TaskResponseValue>>
     suspend fun delete(id: Long)
+    suspend fun update(task: TaskResponseValue)
 }

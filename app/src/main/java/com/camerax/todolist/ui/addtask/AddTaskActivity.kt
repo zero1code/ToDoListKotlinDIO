@@ -38,20 +38,32 @@ class AddTaskActivity : AppCompatActivity() {
     private val viewModel by viewModel<AddTaskViewModel>()
     private val dialog by lazy { createProgressDialog() }
     private val binding by lazy { ActivityAddTaskBinding.inflate(layoutInflater) }
-    private val modalBottomSheet by lazy { ModalBottomSheet() }
-    private lateinit var bottomSheetListener: BottomSheetListener
+    private val modalBottomSheet by lazy { ModalCalendarBottomSheet() }
+    private lateinit var IModalCalendarBottomSheet: IModalCalendarBottomSheet
     private lateinit var task: TaskResponseValue
     private var reminderYear = 0L
-    private var dateYear= 0L
+    private var dateYear = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.topAppBar.setNavigationOnClickListener {finish()}
+
         bindObserve()
 
+        bindEditTask()
         insertListeners()
         tieListeners()
+    }
+
+    private fun bindEditTask() {
+        if (intent.hasExtra("task")) {
+            task = intent.getSerializableExtra("task") as TaskResponseValue
+
+            binding.tilTitle.text = task.title
+            binding.tilDescription.text = task.description
+        }
     }
 
     private fun tieListeners() {
@@ -71,19 +83,19 @@ class AddTaskActivity : AppCompatActivity() {
     private fun insertListeners() {
         binding.chDate.setOnClickListener {
             binding.chDate.clearAnimation()
-            if (binding.chDate.text.contains("Data")) ModalBottomSheet.timestampDate =
-                0 else ModalBottomSheet.timestampDate
-            modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
-            bottomSheetListener = object : BottomSheetListener {
+            if (binding.chDate.text.contains("Data")) ModalCalendarBottomSheet.timestampDate =
+                0 else ModalCalendarBottomSheet.timestampDate
+            modalBottomSheet.show(supportFragmentManager, ModalCalendarBottomSheet.TAG)
+            IModalCalendarBottomSheet = object : IModalCalendarBottomSheet {
                 override fun onClick(selectedDate: Long) {
                     dateYear = SimpleDateFormat("yyyy").format(Date(selectedDate)).toLong()
                     binding.chDate.text = Date(selectedDate).format()
                     binding.btnClearChips.visibility = View.VISIBLE
-                    ModalBottomSheet.timestampDate = selectedDate
+                    ModalCalendarBottomSheet.timestampDate = selectedDate
                     modalBottomSheet.dismiss()
                 }
             }
-            modalBottomSheet.listener(bottomSheetListener)
+            modalBottomSheet.listener(IModalCalendarBottomSheet)
         }
 
         binding.chTime.setOnClickListener {
@@ -114,37 +126,37 @@ class AddTaskActivity : AppCompatActivity() {
 
         binding.btnAddReminder.setOnClickListener {
 
-            if (binding.chReminderDate.text.contains("Data")) ModalBottomSheet.timestampDate =
-                0 else ModalBottomSheet.timestampDate
-            modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
-            bottomSheetListener = object : BottomSheetListener {
+            if (binding.chReminderDate.text.contains("Data")) ModalCalendarBottomSheet.timestampDate =
+                0 else ModalCalendarBottomSheet.timestampDate
+            modalBottomSheet.show(supportFragmentManager, ModalCalendarBottomSheet.TAG)
+            IModalCalendarBottomSheet = object : IModalCalendarBottomSheet {
                 override fun onClick(selectedDate: Long) {
                     reminderYear = SimpleDateFormat("yyyy").format(Date(selectedDate)).toLong()
                     binding.chReminderDate.text = Date(selectedDate).format()
                     binding.btnClearChipsReminder.visibility = View.VISIBLE
                     binding.chipReminderGroup.visibility = View.VISIBLE
                     binding.btnAddReminder.visibility = View.INVISIBLE
-                    ModalBottomSheet.timestampDate = selectedDate
+                    ModalCalendarBottomSheet.timestampDate = selectedDate
                     modalBottomSheet.dismiss()
                 }
             }
-            modalBottomSheet.listener(bottomSheetListener)
+            modalBottomSheet.listener(IModalCalendarBottomSheet)
         }
 
         binding.chReminderDate.setOnClickListener {
-            if (binding.chDate.text.contains("Data")) ModalBottomSheet.timestampDate =
-                0 else ModalBottomSheet.timestampDate
-            modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
-            bottomSheetListener = object : BottomSheetListener {
+            if (binding.chDate.text.contains("Data")) ModalCalendarBottomSheet.timestampDate =
+                0 else ModalCalendarBottomSheet.timestampDate
+            modalBottomSheet.show(supportFragmentManager, ModalCalendarBottomSheet.TAG)
+            IModalCalendarBottomSheet = object : IModalCalendarBottomSheet {
                 override fun onClick(selectedDate: Long) {
                     reminderYear = SimpleDateFormat("yyyy").format(Date(selectedDate)).toLong()
                     binding.chReminderDate.text = Date(selectedDate).format()
                     binding.btnClearChipsReminder.visibility = View.VISIBLE
-                    ModalBottomSheet.timestampDate = selectedDate
+                    ModalCalendarBottomSheet.timestampDate = selectedDate
                     modalBottomSheet.dismiss()
                 }
             }
-            modalBottomSheet.listener(bottomSheetListener)
+            modalBottomSheet.listener(IModalCalendarBottomSheet)
         }
 
         binding.chReminderTime.setOnClickListener {
@@ -190,7 +202,7 @@ class AddTaskActivity : AppCompatActivity() {
                 val date = sdfd.parse("${binding.chDate.text} $dateYear ${binding.chTime.text}")
                 val timestampDate = (date.time.div(1000))
 
-                var timestampAlarm= 0L
+                var timestampAlarm = 0L
                 if (!binding.chReminderDate.text.contains("Data")) {
                     val reminder =
                         sdfd.parse("${binding.chReminderDate.text} $reminderYear ${binding.chReminderTime.text}")
@@ -199,7 +211,7 @@ class AddTaskActivity : AppCompatActivity() {
 
 
                 task = TaskResponseValue(
-                    id = 0,
+                    id = if (intent.hasExtra("task")) task.id else 0,
                     title = binding.tilTitle.text,
                     description = binding.tilDescription.text,
                     date = binding.chDate.text.toString(),
@@ -207,12 +219,14 @@ class AddTaskActivity : AppCompatActivity() {
                     reminder_date = binding.chReminderDate.text.toString(),
                     reminder_time = binding.chReminderTime.text.toString(),
                     timestamp_date = timestampDate,
-                    timestamp_alarm = timestampAlarm
+                    timestamp_alarm = timestampAlarm,
+                    task_completed = 0
                 )
-                val id = viewModel.saveTask(task)
-                Log.d("TAG", "insertListeners: $id")
-
-                setResult(RESULT_OK)
+                if (task.id != 0L) {
+                   viewModel.updateTask(task)
+                } else {
+                    viewModel.saveTask(task)
+                }
             }
         }
     }
@@ -226,11 +240,11 @@ class AddTaskActivity : AppCompatActivity() {
         val monthNow = SimpleDateFormat("M").format(Date(Date().time)).toInt()
 
         val dateSelected =
-            SimpleDateFormat("dd").format(Date(ModalBottomSheet.timestampDate)).toInt()
+            SimpleDateFormat("dd").format(Date(ModalCalendarBottomSheet.timestampDate)).toInt()
         val yearSelected =
-            SimpleDateFormat("yyyy").format(Date(ModalBottomSheet.timestampDate)).toInt()
+            SimpleDateFormat("yyyy").format(Date(ModalCalendarBottomSheet.timestampDate)).toInt()
         val monthSelected =
-            SimpleDateFormat("M").format(Date(ModalBottomSheet.timestampDate)).toInt()
+            SimpleDateFormat("M").format(Date(ModalCalendarBottomSheet.timestampDate)).toInt()
 
         if (hourNow == hourSelected) {
             if (minNow > minSelected && dateNow == dateSelected && yearNow == yearSelected) {
@@ -337,7 +351,34 @@ class AddTaskActivity : AppCompatActivity() {
                     }.show()
                 }
                 is AddTaskViewModel.State.Success -> success(it)
-                AddTaskViewModel.State.Saved -> {
+                AddTaskViewModel.State.Updated -> {
+                    dialog.dismiss()
+                    binding.appBar.visibility = View.GONE
+                    binding.groupTask.visibility = View.GONE
+                    binding.confirmAnimation.visibility = View.VISIBLE
+                    binding.confirmAnimation.playAnimation()
+                    binding.confirmAnimation.addAnimatorListener(object :
+                        Animator.AnimatorListener {
+                        override fun onAnimationRepeat(animation: Animator?) {}
+                        override fun onAnimationCancel(animation: Animator?) {}
+                        override fun onAnimationStart(animation: Animator?) {}
+
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            startActivity(
+                                Intent(
+                                    this@AddTaskActivity,
+                                    ConfirmTaskActivity::class.java
+                                ).putExtra(
+                                    TASK_ID, task
+                                )
+                            )
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+                            finish()
+                        }
+                    })
+                }
+                is AddTaskViewModel.State.Saved -> {
                     dialog.dismiss()
                     binding.appBar.visibility = View.GONE
                     binding.groupTask.visibility = View.GONE

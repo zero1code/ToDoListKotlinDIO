@@ -6,15 +6,17 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.camerax.todolist.core.extensions.createDialog
 import com.camerax.todolist.core.extensions.createProgressDialog
+import com.camerax.todolist.core.extensions.format
+import com.camerax.todolist.data.model.TaskResponseValue
 import com.camerax.todolist.databinding.ActivityMainBinding
 import com.camerax.todolist.presentation.MainViewModel
 import com.camerax.todolist.ui.addtask.AddTaskActivity
 import com.camerax.todolist.ui.addtask.AddTaskActivity.Companion.TASK_ID
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.camerax.todolist.ui.addtask.IModalCalendarBottomSheet
+import com.camerax.todolist.ui.addtask.ModalCalendarBottomSheet
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     private val dialog by lazy { createProgressDialog() }
     private val viewModel by viewModel<MainViewModel>()
     private val adapter by lazy { TaskListAdapter() }
+    private val modalBottomSheet by lazy { ModalTaskDetailsBottomSheet() }
+    private lateinit var IModalTaskDetailsBottomSheet: IModalTaskDetailsBottomSheet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +63,9 @@ class MainActivity : AppCompatActivity() {
                     createDialog {
                         setMessage("Tarefa excluída com sucesso!")
                     }.show()
-//                    binding.includeEmpty.emptyState.visibility =
-//                        if (it.list.isEmpty()) View.VISIBLE else View.GONE
-//                    adapter.submitList(it.list)
+                    binding.includeEmpty.emptyState.visibility =
+                        if (it.list.isEmpty()) View.VISIBLE else View.GONE
+                    adapter.submitList(it.list)
                 }
             }
         }
@@ -72,10 +76,28 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, AddTaskActivity::class.java))
         }
 
-        adapter.listenerEdit = {
-            val intent = Intent(this, AddTaskActivity::class.java)
-            intent.putExtra(TASK_ID, it.id)
-            startActivity(intent)
+        adapter.listenerTaskDetails = {
+            val args = Bundle()
+            args.putSerializable("task", it)
+            modalBottomSheet.arguments = args
+            modalBottomSheet.show(supportFragmentManager, ModalTaskDetailsBottomSheet.TAG)
+            IModalTaskDetailsBottomSheet = object : IModalTaskDetailsBottomSheet {
+                override fun onClickUpdateTask(task: TaskResponseValue) {
+                    viewModel.updateTask(task)
+                    modalBottomSheet.dismiss()
+                }
+
+                override fun onClickEditTask(task: TaskResponseValue) {
+                    startActivity(Intent(this@MainActivity, AddTaskActivity::class.java).putExtra("task", task))
+                    modalBottomSheet.dismiss()
+                }
+
+                override fun onClickDeleteTask(task: TaskResponseValue) {
+                    viewModel.deleteTask(task.id)
+                    modalBottomSheet.dismiss()
+                }
+            }
+            modalBottomSheet.listener(IModalTaskDetailsBottomSheet)
         }
 
         adapter.listenerDelete = {

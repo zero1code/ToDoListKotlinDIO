@@ -22,8 +22,12 @@
     <string name="label_remember_task_description">Agora é só esperar que a gente te avisa quando sua tarefa estiver próxima do horário marcado.</string>
     <string name="label_back">Voltar</string>
     <string name="label_task_registred">Sua tarefa foi registrada.</string>
+    <string name="label_task_updated">Sua tarefa foi atualizada.</string>
     <string name="label_today">Hoje</string>
     <string name="label_error_no_task_date">Informe a data da tarefa.</string>
     <string name="label_error_no_task_time">Informe o horário da tarefa.</string>
     <string name="label_error_no_reminder_task_time">Informe o horário do lembrete da tarefa.</string>
+    <string name="label_finished_task">Finalizar Tarefa</string>
+    <string name="label_no_description">Nenhuma descrição foi definida.</string>
+    <string name="label_delete_task">Deletar tarefa</string>
 </resources>

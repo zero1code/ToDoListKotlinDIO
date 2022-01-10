@@ -15,4 +15,7 @@ interface TaskDao {
 
     @Query("DELETE from tb_tasks where id = :id")
     fun deleteTask(id: Long)
+
+    @Update
+    fun updateTask(task: TaskResponseValue)
 }
