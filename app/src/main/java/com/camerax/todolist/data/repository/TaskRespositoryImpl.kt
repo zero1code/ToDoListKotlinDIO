@@ -2,7 +2,6 @@ package com.camerax.todolist.data.repository
 
 import com.camerax.todolist.data.database.AppDatabase
 import com.camerax.todolist.data.model.TaskResponseValue
-import com.camerax.todolist.model.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +19,10 @@ class TaskRespositoryImpl(
 
     override fun list(): Flow<List<TaskResponseValue>> {
         return dao.findAll()
+    }
+
+    override fun findByDate(date: String): Flow<List<TaskResponseValue>> {
+        return dao.findByDate(date)
     }
 
     override suspend fun delete(id: Long) {

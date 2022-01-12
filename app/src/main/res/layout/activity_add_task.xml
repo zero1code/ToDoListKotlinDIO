@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/label_new_task"
-            app:navigationIcon="@drawable/ic_navigate"
+            app:navigationIcon="@drawable/ic_navigate_back"
             style="@style/Toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -172,13 +172,15 @@
                             android:id="@+id/ch_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/label_date"/>
+                            android:text="@string/label_date"
+                            android:textAppearance="@style/chipText"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/ch_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/label_hour"/>
+                            android:text="@string/label_hour"
+                            android:textAppearance="@style/chipText"/>
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -242,13 +244,15 @@
                             android:id="@+id/ch_reminder_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/label_date"/>
+                            android:text="@string/label_date"
+                            android:textAppearance="@style/chipText"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/ch_reminder_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/label_hour"/>
+                            android:text="@string/label_hour"
+                            android:textAppearance="@style/chipText"/>
 
                     </com.google.android.material.chip.ChipGroup>
 

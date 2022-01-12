@@ -1,9 +1,6 @@
 package com.camerax.todolist.domain.di
 
-import com.camerax.todolist.domain.DeleteTaskUseCase
-import com.camerax.todolist.domain.ListTaskUseCase
-import com.camerax.todolist.domain.SaveTaskUseCase
-import com.camerax.todolist.domain.UpdateTaskUseCase
+import com.camerax.todolist.domain.*
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -18,6 +15,7 @@ object DomainModule {
             factory { SaveTaskUseCase(get()) }
             factory { DeleteTaskUseCase(get()) }
             factory { ListTaskUseCase(get()) }
+            factory { ListTaskByDateUseCase(get()) }
             factory { UpdateTaskUseCase(get()) }
         }
     }

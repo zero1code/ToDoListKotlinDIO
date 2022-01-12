@@ -3,8 +3,10 @@ package com.camerax.todolist.presentation
 import androidx.lifecycle.*
 import com.camerax.todolist.data.model.TaskResponseValue
 import com.camerax.todolist.domain.DeleteTaskUseCase
+import com.camerax.todolist.domain.ListTaskByDateUseCase
 import com.camerax.todolist.domain.ListTaskUseCase
 import com.camerax.todolist.domain.UpdateTaskUseCase
+import com.camerax.todolist.model.CalendarModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class MainViewModel(
+    private val listTaskByDateUseCase: ListTaskByDateUseCase,
     private val listTaskUseCase: ListTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val updateTaskUseCase: UpdateTaskUseCase
@@ -22,8 +25,24 @@ class MainViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     private fun getTasks() {
+//        viewModelScope.launch {
+//            listTaskUseCase()
+//                .flowOn(Dispatchers.Main)
+//                .onStart {
+//                    _state.value = State.Loading
+//                }
+//                .catch {
+//                    _state.value = State.Error(it)
+//                }
+//                .collect {
+//                    _state.value = State.Success(it)
+//                }
+//        }
+    }
+
+     fun getTasksByDate(date: String) {
         viewModelScope.launch {
-            listTaskUseCase()
+            listTaskByDateUseCase(date)
                 .flowOn(Dispatchers.Main)
                 .onStart {
                     _state.value = State.Loading
@@ -73,6 +92,7 @@ class MainViewModel(
         object Loading : State()
 
         data class Success(val list: List<TaskResponseValue>) : State()
+        data class SuccessCalendar(val list: List<CalendarModel>) : State()
         data class Deleted(val list: List<TaskResponseValue>) : State()
         data class Updated(val list: List<TaskResponseValue>) : State()
         data class Error(val error: Throwable) : State()

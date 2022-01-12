@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,10 +14,10 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
+            style="@style/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="@string/label_my_tasks"
-            style="@style/Toolbar" />
+            app:title="@string/label_my_tasks" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -25,39 +25,113 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="1dp">
+
+        <include
+            android:id="@+id/include_empty"
+            layout="@layout/empty_state"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_add"
             android:layout_margin="16dp"
+            android:contentDescription="@string/label_description_new_task"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="@string/label_description_new_task" />
+            app:srcCompat="@drawable/ic_add" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="match_parent">
 
-            <include android:id="@+id/include_empty" layout="@layout/empty_state" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_today"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="@string/label_today"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_calendar_previous"
+                app:layout_constraintEnd_toStartOf="@id/iv_calendar_previous"
+                app:layout_constraintTop_toTopOf="@+id/iv_calendar_previous"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_calendar_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date_month"
+                app:layout_constraintEnd_toStartOf="@id/tv_date_month"
+                app:layout_constraintTop_toTopOf="@+id/tv_date_month"
+                app:srcCompat="@drawable/ic_navigate_back" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_calendar_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date_month"
+                app:layout_constraintStart_toEndOf="@id/tv_date_month"
+                app:layout_constraintTop_toTopOf="@+id/tv_date_month"
+                app:srcCompat="@drawable/ic_navigate_next" />
+
+            <TextView
+                android:id="@+id/tv_date_month"
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="December 2020" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_days_of_year"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_date_month"
+                app:layout_constraintBottom_toTopOf="@id/rv_tasks"
+                tools:itemCount="10"
+                tools:listitem="@layout/adapter_days_of_year"
+                tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tasks"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="80"
-                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_days_of_year"
+                tools:itemCount="7"
                 tools:listitem="@layout/item_task"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

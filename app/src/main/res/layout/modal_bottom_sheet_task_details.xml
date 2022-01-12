@@ -161,28 +161,15 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_date_timer" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_cancel"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:text="@string/label_cancel"
-                android:textAllCaps="false"
-                android:layout_marginTop="32dp"
-                app:layout_constraintEnd_toStartOf="@id/btn_confirm"
-                app:layout_constraintStart_toStartOf="@id/guide_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_date_reminder" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
                 android:text="@string/label_finished_task"
                 android:layout_marginTop="32dp"
                 android:textAllCaps="false"
+                android:backgroundTint="@color/green"
                 app:layout_constraintEnd_toEndOf="@id/guide_end"
-                app:layout_constraintStart_toEndOf="@id/btn_cancel"
+                app:layout_constraintStart_toEndOf="@id/guide_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_date_reminder" />
 
 

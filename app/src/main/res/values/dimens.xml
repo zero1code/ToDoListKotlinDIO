@@ -6,4 +6,6 @@
 
     <dimen name="bottom_sheet_corner_radius">24dp</dimen>
     <dimen name="bottom_sheet_top_padding">8dp</dimen>
+
+    <dimen name="single_calendar_margin">8dp</dimen>
 </resources>

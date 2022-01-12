@@ -21,7 +21,6 @@ object DataModules {
             }
         }
     }
-
     private fun databaseModule(): Module {
         return module {
             single { AppDatabase.getInstance(androidApplication()) }

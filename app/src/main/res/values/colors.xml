@@ -14,6 +14,7 @@
     <color name="orange">#FF9900</color>
     <color name="ripple_orange">#1FFF9900</color>
     <color name="background_color">#E8E6D1</color>
+    <color name="card_selected">#868472</color>
     <color name="blue">#80D0D7E7</color>
     <color name="yellow">#80F0E5AD</color>
 </resources>

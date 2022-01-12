@@ -1,5 +1,6 @@
 package com.camerax.todolist.core
 
+import com.camerax.todolist.data.model.TaskResponseValue
 import kotlinx.coroutines.flow.Flow
 
 abstract class UseCase<Param, Source> {
@@ -17,6 +18,10 @@ abstract class UseCase<Param, Source> {
     }
 
     abstract class NoSource<Params> : UseCase<Params, Unit>() {
+        override suspend operator fun invoke(param: Params) = execute(param)
+    }
+
+    abstract class WithParam<Params> : UseCase<Params, List<TaskResponseValue>>() {
         override suspend operator fun invoke(param: Params) = execute(param)
     }
 

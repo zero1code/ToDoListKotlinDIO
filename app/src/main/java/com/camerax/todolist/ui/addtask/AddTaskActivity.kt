@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -23,6 +22,7 @@ import com.camerax.todolist.data.model.TaskResponseValue
 import com.camerax.todolist.databinding.ActivityAddTaskBinding
 import com.camerax.todolist.presentation.AddTaskViewModel
 import com.camerax.todolist.ui.confirmtask.ConfirmTaskActivity
+import com.camerax.todolist.ui.modal.ModalCalendarBottomSheet
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker

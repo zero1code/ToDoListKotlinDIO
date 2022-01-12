@@ -10,6 +10,9 @@ interface TaskDao {
     @Query(value = "SELECT * FROM tb_tasks")
     fun findAll(): Flow<List<TaskResponseValue>>
 
+    @Query(value = "SELECT * FROM tb_tasks WHERE date = :date")
+    fun findByDate(date: String): Flow<List<TaskResponseValue>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(entity: TaskResponseValue): Long
 
