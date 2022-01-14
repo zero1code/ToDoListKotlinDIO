@@ -31,13 +31,16 @@ class MainActivity : AppCompatActivity() {
     private val dialog by lazy { createProgressDialog() }
     private val viewModel by viewModel<MainViewModel>()
     private val adapter by lazy { TaskListAdapter() }
+
+    private lateinit var allTasks: List<TaskResponseValue>
+
     private val modalBottomSheet by lazy { ModalTaskDetailsBottomSheet() }
     private lateinit var IModalTaskDetailsBottomSheet: IModalTaskDetailsBottomSheet
 
     private val sdf = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     private val cal = Calendar.getInstance(Locale.getDefault())
     private val calendarList2 = ArrayList<CalendarModel>()
-    private val dates =  ArrayList<Date>()
+    private val dates = ArrayList<Date>()
     private lateinit var calendarAdapter: CalendarAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         bindObserve()
         insertListeners()
-        setUpCalendarAdapter()
-        setUpCalendar()
-        calendarToCurrentDatePosition()
 
         lifecycle.addObserver(viewModel)
 
@@ -68,6 +68,12 @@ class MainActivity : AppCompatActivity() {
                     }.show()
                 }
                 is MainViewModel.State.Success -> {
+                    allTasks = it.list
+                    setUpCalendarAdapter()
+                    setUpCalendar()
+                    calendarToCurrentDatePosition()
+                }
+                is MainViewModel.State.SuccessCalendar -> {
                     dialog.dismiss()
                     binding.includeEmpty.emptyState.visibility =
                         if (it.list.isEmpty()) View.VISIBLE else View.GONE
@@ -103,7 +109,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onClickEditTask(task: TaskResponseValue) {
-                    startActivity(Intent(this@MainActivity, AddTaskActivity::class.java).putExtra("task", task))
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            AddTaskActivity::class.java
+                        ).putExtra("task", task)
+                    )
                     modalBottomSheet.dismiss()
                 }
 
@@ -147,28 +158,27 @@ class MainActivity : AppCompatActivity() {
         val snapHelper: SnapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(binding.rvDaysOfYear)
 
-        calendarAdapter = CalendarAdapter { calendarDateModel: CalendarModel, position: Int ->
+        calendarAdapter = CalendarAdapter({ calendarDateModel: CalendarModel, position: Int ->
             calendarList2.forEachIndexed { index, calendarModel ->
                 calendarModel.isSelected = index == position
                 daySelected = calendarDateModel.calendarFullDate
-
             }
             changeDateOnce++
             calendarAdapter.setData(calendarList2)
             viewModel.getTasksByDate(daySelected)
-             if (daySelected != currentDate) {
-                 if (changeDateOnce == 1) {
-                     val animationMove = AnimationUtils.loadAnimation(this, R.anim.move_from_left)
-                     binding.btnToday.startAnimation(animationMove)
-                     binding.btnToday.visibility = View.VISIBLE
-                 }
+            if (daySelected != currentDate) {
+                if (changeDateOnce == 1) {
+                    val animationMove = AnimationUtils.loadAnimation(this, R.anim.move_from_left)
+                    binding.btnToday.startAnimation(animationMove)
+                    binding.btnToday.visibility = View.VISIBLE
+                }
             } else {
-                 val animationMove = AnimationUtils.loadAnimation(this, R.anim.move_from_right)
-                 binding.btnToday.startAnimation(animationMove)
-                 binding.btnToday.visibility = View.GONE
-                 changeDateOnce = 0
+                val animationMove = AnimationUtils.loadAnimation(this, R.anim.move_from_right)
+                binding.btnToday.startAnimation(animationMove)
+                binding.btnToday.visibility = View.GONE
+                changeDateOnce = 0
             }
-        }
+        }, allTasks)
 
         binding.rvDaysOfYear.adapter = calendarAdapter
     }

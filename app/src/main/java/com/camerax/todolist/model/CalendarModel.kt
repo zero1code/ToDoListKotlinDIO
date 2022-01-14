@@ -3,7 +3,10 @@ package com.camerax.todolist.model
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class CalendarModel(var data: Date, var isSelected: Boolean = false) {
+data class CalendarModel(
+    var data: Date,
+    var isSelected: Boolean = false
+) {
 
     val calendarDay: String
         get() = SimpleDateFormat("E", Locale.getDefault()).format(data).substring(0, 3)

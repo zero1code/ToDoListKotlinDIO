@@ -25,19 +25,19 @@ class MainViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     private fun getTasks() {
-//        viewModelScope.launch {
-//            listTaskUseCase()
-//                .flowOn(Dispatchers.Main)
-//                .onStart {
-//                    _state.value = State.Loading
-//                }
-//                .catch {
-//                    _state.value = State.Error(it)
-//                }
-//                .collect {
-//                    _state.value = State.Success(it)
-//                }
-//        }
+        viewModelScope.launch {
+            listTaskUseCase()
+                .flowOn(Dispatchers.Main)
+                .onStart {
+                    _state.value = State.Loading
+                }
+                .catch {
+                    _state.value = State.Error(it)
+                }
+                .collect {
+                    _state.value = State.Success(it)
+                }
+        }
     }
 
      fun getTasksByDate(date: String) {
@@ -51,7 +51,7 @@ class MainViewModel(
                     _state.value = State.Error(it)
                 }
                 .collect {
-                    _state.value = State.Success(it)
+                    _state.value = State.SuccessCalendar(it)
                 }
         }
     }
@@ -92,7 +92,7 @@ class MainViewModel(
         object Loading : State()
 
         data class Success(val list: List<TaskResponseValue>) : State()
-        data class SuccessCalendar(val list: List<CalendarModel>) : State()
+        data class SuccessCalendar(val list: List<TaskResponseValue>) : State()
         data class Deleted(val list: List<TaskResponseValue>) : State()
         data class Updated(val list: List<TaskResponseValue>) : State()
         data class Error(val error: Throwable) : State()

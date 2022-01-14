@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_calendar"
@@ -24,13 +25,55 @@
             <TextView
                 android:id="@+id/tv_calendar_day"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:text="sab"/>
 
             <TextView
                 android:id="@+id/tv_calendar_date"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:text="12"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_task_wait"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ic_task_completed"
+                    app:srcCompat="@drawable/ic_task_wait"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_task_completed"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:srcCompat="@drawable/ic_task_completed"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_task_not_comleted"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_task_completed"
+                    app:srcCompat="@drawable/ic_task_not_completed"/>
+
+            </LinearLayout>
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
