@@ -5,7 +5,7 @@ import java.util.*
 
 data class CalendarModel(
     var data: Date,
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
 ) {
 
     val calendarDay: String

@@ -6,31 +6,25 @@
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/bg_bottomsheet.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_calendar.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_check.xml" value="0.3828125" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_edit_calendar.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_navigate.xml" value="0.3828125" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_navigate_back.xml" value="0.3828125" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_navigate_next.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_notification.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/ic_timer.xml" value="0.3828125" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/drawable/round_image_view_click.xml" value="0.21302083333333333" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/font/my_rubik_font.xml" value="0.2359375" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/activity_add_task.xml" value="0.33" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/activity_confirm_task.xml" value="0.33" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/adapter_dayos_of_year.xml" value="0.20572916666666666" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/adapter_days_of_year.xml" value="2.0" />
+        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/dialog_add_task_type.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/empty_state.xml" value="0.196875" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/item_task.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/item_task.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/list_item_task_type.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/modal_bottom_sheet_content.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/layout/modal_bottom_sheet_task_details.xml" value="0.67" />
         <entry key="..\:/Users/mpnot/Documents/PROGRAMACAO/KOTLIN/ToDoListKotlinDIO/app/src/main/res/menu/popup_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/drawable/ic_check.xml" value="0.2703125" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/drawable/ic_more.xml" value="0.2703125" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/drawable/ic_navigate.xml" value="0.2703125" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/layout/activity_add_task.xml" value="0.25416666666666665" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/layout/activity_main.xml" value="0.20092592592592592" />
+        <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/layout/adapter_days_of_year.xml" value="0.5" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/layout/item_task.xml" value="0.25416666666666665" />
         <entry key="..\:/curso-kotlin/Todolist/app/src/main/res/layout/list_item_task_type.xml" value="0.25416666666666665" />
       </map>

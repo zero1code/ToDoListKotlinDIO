@@ -44,8 +44,13 @@ class CalendarAdapter(
             val monthCalendar = cal.clone() as Calendar
             cal.time = monthCalendar.time
 
+            taskCompleted.visibility = View.GONE
+            taskNotCompleted.visibility = View.GONE
+            taskWait.visibility = View.GONE
+
             for (task in taskList) {
-                if (task.date == item.calendarDate) {
+                if (task.date == item.calendarFullDate) {
+
                     val taskDate = task.timestamp_date * 1000
                     val diferenceDates = taskDate.minus(currentDate)
 

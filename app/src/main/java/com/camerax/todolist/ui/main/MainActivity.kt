@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
     private val adapter by lazy { TaskListAdapter() }
 
-    private lateinit var allTasks: List<TaskResponseValue>
+    private lateinit var allTasks: MutableList<TaskResponseValue>
 
     private val modalBottomSheet by lazy { ModalTaskDetailsBottomSheet() }
     private lateinit var IModalTaskDetailsBottomSheet: IModalTaskDetailsBottomSheet
@@ -68,7 +68,13 @@ class MainActivity : AppCompatActivity() {
                     }.show()
                 }
                 is MainViewModel.State.Success -> {
-                    allTasks = it.list
+                    if (this::allTasks.isInitialized) {
+                        allTasks.clear()
+                    }
+                    allTasks = it.list.toMutableList()
+                    firstOpenActivity = true
+                    changeDateOnce = 0
+                    cal.time = Date()
                     setUpCalendarAdapter()
                     setUpCalendar()
                     calendarToCurrentDatePosition()
@@ -78,6 +84,10 @@ class MainActivity : AppCompatActivity() {
                     binding.includeEmpty.emptyState.visibility =
                         if (it.list.isEmpty()) View.VISIBLE else View.GONE
                     adapter.submitList(it.list)
+                    setUpCalendarAdapter()
+                    setUpCalendar()
+                        .class
+
                 }
                 is MainViewModel.State.Deleted -> {
                     dialog.dismiss()
@@ -87,6 +97,11 @@ class MainActivity : AppCompatActivity() {
                     binding.includeEmpty.emptyState.visibility =
                         if (it.list.isEmpty()) View.VISIBLE else View.GONE
                     adapter.submitList(it.list)
+                    firstOpenActivity = true
+                    changeDateOnce = 0
+                    cal.time = Date()
+                    setUpCalendar()
+                    calendarToCurrentDatePosition()
                 }
             }
         }
@@ -153,10 +168,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpCalendarAdapter() {
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.single_calendar_margin)
-        binding.rvDaysOfYear.addItemDecoration(HorizontalItemDecoration(spacingInPixels))
-        val snapHelper: SnapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.rvDaysOfYear)
 
         calendarAdapter = CalendarAdapter({ calendarDateModel: CalendarModel, position: Int ->
             calendarList2.forEachIndexed { index, calendarModel ->
