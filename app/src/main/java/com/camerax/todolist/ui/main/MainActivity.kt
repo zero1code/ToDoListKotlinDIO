@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.camerax.todolist.R
 import com.camerax.todolist.core.extensions.createDialog
 import com.camerax.todolist.core.extensions.createProgressDialog
@@ -55,6 +53,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllTasks()
+    }
+
     private fun bindObserve() {
         viewModel.state.observe(this) {
             when (it) {
@@ -81,12 +84,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 is MainViewModel.State.SuccessCalendar -> {
                     dialog.dismiss()
+
                     binding.includeEmpty.emptyState.visibility =
                         if (it.list.isEmpty()) View.VISIBLE else View.GONE
                     adapter.submitList(it.list)
-                    setUpCalendarAdapter()
-                    setUpCalendar()
-                        .class
 
                 }
                 is MainViewModel.State.Deleted -> {

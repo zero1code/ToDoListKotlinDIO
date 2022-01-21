@@ -25,6 +25,10 @@ class MainViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     private fun getTasks() {
+
+    }
+
+    fun getAllTasks() {
         viewModelScope.launch {
             listTaskUseCase()
                 .flowOn(Dispatchers.Main)
